@@ -1,0 +1,30 @@
+{
+  "development": {
+    "username": "root",
+    "password": "Anhdung001",
+    "database": "ecommerce",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "Anhdung001",
+    "database": "ecommerce_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": "Anhdung001",
+    "database": "ecommerce_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "database": {
+    "username": "root",
+    "password": "Anhdung001",
+    "database": "ecommerce",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}

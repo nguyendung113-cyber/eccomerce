@@ -10,12 +10,25 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: true,
       },
       password: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: true,
       },
-      
+      numberphone: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      firstname: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      lastname: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
     });
   },
   async down(queryInterface, Sequelize) {

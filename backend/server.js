@@ -1,16 +1,16 @@
 const express = require('express');
 const cors = require('cors');
-const mysql = require('mysql2');
-
+const bcrypt = require('bcrypt');
 const app = express();
+const jwt = require('jsonwebtoken');
+const connection = require('./config/connection');
+const register = require('./controller/authController');
+const bodyParser = require('body-parser');
 
 
-const connection = mysql.createConnection({
-    host: '127.0.0.1',
-    user: 'root',
-    password: 'Anhdung001',
-    database: 'ecommerce'
-  });
+
+
+  app.use(bodyParser.json());
 
   app.use(cors());
   app.use(express.json());
@@ -24,20 +24,30 @@ const connection = mysql.createConnection({
 
   });
 
+  connection.connect((err) => {
+    if (err) throw err;
+    console.log('Connected to database');
+});
+
+
+app.post('/register', register);
 
 app.post('/login', (req, res) => {
-    const query = 'SELECT * FROM users WHERE email = ? AND password = ?';
+  const { email, password } = req.body;
 
-    connection.query(query,[req.body.email ,req.body.password], (err, result) => {
-        if(err) return res.json("error");
-        if(result.length > 0)  {
-            return res.json("Login success");
-        }else{
-            return res.json("Login failed");
-        }
-    });
+  connection.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
+      if (err) return res.status(500).send('Server error');
+      if (results.length === 0) return res.status(404).send('User not found');
+
+      const user = results[0];
+      const passwordIsValid = bcrypt.compareSync(password, user.password);
+
+      if (!passwordIsValid) return res.status(401).send('Invalid password');
+
+      const token = jwt.sign({ id: user.id }, 'your_secret_key', { expiresIn: 86400 });
+      res.status(200).send({ auth: true, token });
   });
-
+})
 
   app.listen(8001, () => {
     console.log(`Server running at http://localhost:8001/`);
